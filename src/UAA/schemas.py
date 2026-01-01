@@ -26,3 +26,14 @@ class UserUpdateSchema(BaseModel):
 
 
 
+# ina ro chat gpt goft ezafe konam
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    expires_in: int
+
+class TokenPayload(BaseModel):
+    sub: str
+    exp: int
+    jti: str
