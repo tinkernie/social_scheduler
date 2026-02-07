@@ -38,7 +38,7 @@ async def instagram_connect_start(user_id: str, session: AsyncSession = Depends(
     return {"auth_url": str(url)}
 
 @router.get("/instagram/callback")
-async def instagram_callback(code: str | None = None, state: str | None = None, session: AsyncSession = Depends(get_session_dep)):
+async def instagram_callback(code: str or None = None, state: str or None = None, session: AsyncSession = Depends(get_session_dep)):
     if not code or not state:
         raise HTTPException(status_code=400, detail="Missing code or state")
 
