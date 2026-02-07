@@ -1,32 +1,21 @@
-from pydantic import BaseModel, EmailStr
+# src/UAA/schemas.py
+from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 import uuid
+from datetime import datetime
 
-
-class UserCreateSchema(BaseModel):
+class UserCreate(BaseModel):
     email: EmailStr
     username: str
     password: str
-    full_name: Optional[str] = None
 
-
-class UserRetriveSchema(BaseModel):
+class UserRead(BaseModel):
     id: uuid.UUID
     email: EmailStr
     username: str
-    full_name: Optional[str] = None
     is_active: bool
-    last_login: Optional[str] = None
-
-class UserUpdateSchema(BaseModel):
-    email: Optional[EmailStr] = None
-    username: Optional[str] = None
-    full_name: Optional[str] = None
-    is_active: Optional[bool] = None
-
-
-
-# ina ro chat gpt goft ezafe konam
+    is_superuser: bool
+    created_at: datetime
 
 class Token(BaseModel):
     access_token: str
