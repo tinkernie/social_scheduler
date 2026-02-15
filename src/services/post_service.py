@@ -2,18 +2,24 @@
 from sqlmodel.ext.asyncio.session import AsyncSession
 from src.models.post import Post, Schedule
 from src.models.connected_platform import ConnectedPlatform
-from src.infrastructure.platforms_repo import PlatformsRepository
+from src.infrastructure.telegram_bot_client import TelegramBotClient
 from sqlmodel import select
-import uuid
-from datetime import datetime
 
 class PostService:
     def __init__(self, session: AsyncSession):
         self.session = session
+        self.telegram_client = TelegramBotClient()
 
     async def create_post(self, user_id: str, payload):
         post = Post(user_id=user_id, title=payload.title, content=payload.content, media_path=payload.media_path, draft=False)
         self.session.add(post)
+
+        await self.telegram_client.publish_post(
+            title=post.title,
+            content=post.content,
+            media_path=post.media_path,
+        )
+
         await self.session.commit()
         await self.session.refresh(post)
         return post
